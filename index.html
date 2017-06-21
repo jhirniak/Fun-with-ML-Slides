@@ -1,0 +1,843 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta faccharset="utf-8">
+
+    <title>Fun with Machine Learning, by Jarek Hirniak</title>
+
+    <meta name="description" content="Fun with Machine Learning">
+    <meta name="author" content="Jarek Hirniak">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/blood.css" id="theme">
+
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/monokai_sublime.css">
+
+    <link rel="stylesheet" href="css/extra.css">
+    <link rel="stylesheet" type="text/css" href="css/evenZoom.css">
+
+    <link rel="stylesheet" type="text/css" href="css/makeitrain.css">
+
+    <script src="js/jquery-1.12.1.min.js"></script>
+    <script src="js/fire-0.62.min.js"></script>
+    <script src="js/evenZoom.js"></script>
+    <script src="js/makeitrain.js"></script>
+
+    <!-- Printing and PDF exports -->
+    <script>
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+
+<div class="reveal">
+    <!-- Wrap all slides in a single "slides" class -->
+    <div class="slides">
+
+        <!-- BEGIN SLIDES -->
+        <section>
+            <h1>Fun with<br>Machine Learning</h1>
+            <h3>by <a class="mm" href="mailto:nospam@thanks.com">Jarek Hirniak</a></h3>
+        </section>
+
+        <section>
+            <blockquote>
+                There are 2 types of people in the world:
+                those who can extrapolate from incomplete data.
+            </blockquote>
+        </section>
+
+        <!-- 1: What is ML, what is the hype about -->
+
+        <section>
+            <h2>Machine Learning in One Picture</h2>
+            <img src="img/the-image-is-an-illushion.ihs"/>
+        </section>
+
+        <section>
+            <h2>JK, here is the picture</h2>
+            <a href="https://xkcd.com/1838/"><img src="img/xkcd-ml.png"/></a>
+        </section>
+
+        <section>
+            <h2>Why ML is interesting?</h2>
+            <ul>
+                <li>Data availability.</li>
+                <li>Ability to model relationship too complex to be captured by human.</li>
+                <li>A way towards ubiquitous computing.</li>
+                <li>Synergy.</li>
+                <li>$$$</li>
+                <li>Still rapidly growing field.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h3>Dawn of Information Age</h3>
+            <img src="img/ie_0.png"/>
+            <div class="source">
+                <a href="http://www.washingtonpost.com/wp-dyn/content/article/2011/02/10/AR2011021004916.html">Washington
+                    Post</a>
+                <a href="https://youtu.be/EHTmxmuhZ10">Philip Evans TedTalk</a>
+            </div>
+        </section>
+
+        <section>
+            <h3>Information Age: Forecast</h3>
+            <img src="img/ie_1.png"/>
+            <div class="source">
+                <a href="http://www.washingtonpost.com/wp-dyn/content/article/2011/02/10/AR2011021004916.html">Washington
+                    Post</a>
+                <a href="https://youtu.be/EHTmxmuhZ10">Philip Evans TedTalk</a>
+            </div>
+        </section>
+
+        <section data-background="img/nuke.jpg">
+            <h2 class="fragment highlight-red">This all data is really getting out of control...</h2>
+        </section>
+
+        <section>
+            <h3>Information Age: Key Observations</h3>
+            <ul>
+                <li>50% of data has IP address (in other words is online)!</li>
+                <li>By 2020, almost all data will be connected.</li>
+                <li>The abundance and ubiquitousness of data changes business intelligence models (e.g. think
+                    Encyclopedia Britannica rendered obsolete by Wikipedia).
+                </li>
+                <li>We literally have a whole world in our pocket.</li>
+                <li>We no longer choose to be connected, but not to be.</li>
+                <li>Some companies accumulated lots of data over years, in a sense they sit on a pile of gold.</li>
+                <li><i>Data is our most valuable natural resource.</i></li>
+                <li><i>But, we need to be able to connect the dots.</i></li>
+            </ul>
+        </section>
+
+        <!-- Everything is connected and you need to make sense of data, but data amount too large for human. -->
+        <section>
+            <h4>We track everything nowadays...</h4>
+            <img class="stretch" src="img/obama-in-ohio_2.jpg" />
+        </section>
+
+        <section>
+            <h4>... and everything starts to track us.</h4>
+            <img class="stretch" src="img/iot.jpg"/>
+        </section>
+
+        <section>
+            <h4>... and everything starts to track us.</h4>
+            <img class="stretch" src="img/bigbrother.png"/>
+            <span class="fragment fade-in" style="position: absolute; bottom:0; left:-200px;">
+                <p style="position: relative; top:80px;">Your Government</p>
+                <img src="img/devilbot.gif"/>
+                <p style="position: relative; top:-90px;"><i style="color: yellow">How adorable...</i></p>
+            </span>
+        </section>
+
+        <section>
+            <h4>So, how much data is munched out there?</h4>
+            <table id="how-much-data">
+                <tr>
+                    <td>Google Search</td>
+                    <td>processes 20 PB a day (2008)<br/>crawls 20e9 web pages a day (2012)</td>
+                </tr>
+                <tr>
+                    <td>Facebook</td>
+                    <td>&gt; 100 PB of user data<br/>+ 500 TB/day (2012)</td>
+                </tr>
+                <tr>
+                    <td>Amazon Web Services</td>
+                    <td>S3: 449e9 objects<br/>peak 290k requests/second (2011)<br/>1e12 objects (2012)</td>
+                </tr>
+                <tr>
+                    <td>JPMorgan Chase</td>
+                    <td>150 PB on 50k+ servers running 15k apps (2011)</td>
+                </tr>
+                <tr>
+                    <td>CERN</td>
+                    <td>Produces 15 PB a year<br/>that needs to be analyzed</td>
+                </tr>
+            </table>
+        </section>
+
+        <section>
+            <h3>How much really is it?</h3>
+            <p>Google processes $ 20 $ PB a day (2008).</p>
+            <p>Tolkien's The Lord of the Rings trilogy has $ 788 $ pages ($ 311 + 258 + 219 $) totalling to $ 2.5 $ MB of raw text.</p>
+            $$ \frac{20 PB}{2.5 MB} = \frac{2^{50}}{2^{20}} = 2^{30} \approx 10^9 $$
+            <p><i>Google analyses an equivalent of 1 billion of LoTR trilogies every day!</i></p>
+            <p>It is not just collection, this data is processed.</p>
+            <p>I wish I could read so many books a day!</p>
+        </section>
+
+        <section>
+            <h4>... and that grow is exponential.</h4>
+            <h4>World changed a lot, very quickly (1981 &rarr; 2016)</h4>
+            <img class="stretch" src="img/640kb.jpg" />
+            <div class="source">
+                <a href="http://www.computerworld.com/article/2534312/operating-systems/the--640k--quote-won-t-go-away----but-did-gates-really-say-it-.html">The origin of 640KB quote</a>
+            </div>
+        </section>
+
+        <section>
+            <h3>Applications</h3>
+            <ul>
+                <li><a href="https://docs.microsoft.com/en-us/azure/security-center/security-center-detection-capabilities">
+                    Azure detects threats based on user behavior and by spotting anomalies.</a></li>
+                <li><a href="http://www.mclaren.com/formula1/partners/SAP/">
+                    McLaren optimizes bolids performance.</a>
+                <li><a href="http://eng.uber.com/neural-networks/">
+                    Uber predicts driver demands and calculates fare prices.</a></li>
+                <li><a href="https://fivethirtyeight.com/features/the-new-science-of-hitting/">
+                    Pro baseball players find better hitting strategies.</a></li>
+                <li><a href="https://youtu.be/opsmd5yuBF0">
+                    Autonomous Drifting</a></li>
+                <li>Optimized shopping experience -
+                    <a href="http://www.sciencedirect.com/science/article/pii/S1319157812000353">products placement</a>,
+                    <a href="https://www.theverge.com/2017/3/27/15073468/amazon-go-shopper-tracking-store-opening-delay">cashier-less experience</a>,
+                    <a href="http://www.eversightlabs.com/press/eversight-transforms-store-promotions-machine-learning-predictive-analytics-already-adopted-several-top-cpgs/">promotions</a>,
+                    and more.</li>
+                <li><a href="http://eqradio.csail.mit.edu/">
+                    Detecting emotions using only wireless router.</a></li>
+                <li><a href="https://www.kaggle.com/c/whale-detection-challenge">
+                    Protecting whales by keeping ships at distance.</a></li>
+                <li><a href="https://www.kaggle.com/c/accelerometer-biometric-competition">
+                    User identification based on accelerometer readings.</a></li>
+                <li>... and much more.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h4>What Machine Learning can do for you?</h4>
+            <ul>
+                <li>personalized recommendations</li>
+                <li>predict when you are going to churn and make you a better deal</li>
+                <li>cut you a better deal when applying for a loan/raise/etc.</li>
+                <li>help to build a network</li>
+                <li>help to make sense out of the data</li>
+                <li>make tha actual ads appeal to you</li>
+                <li>help to build the cities of the future</li>
+                <li>detect health problems before a doctor can</li>
+                <li>give ensemble recommendation (based on expertise of thousands of experts)</li>
+                <li>automate away any daunting tasks</li>
+                <li>filter out the content that you do not want to see</li>
+                <li>and much more...</li>
+            </ul>
+        </section>
+
+        <section data-background="img/crashed-pizza-ad.jpg">
+            <h3>Applications</h3>
+            <h4>This is crashed ad in a pizza store</h4>
+        </section>
+
+        <section data-background="img/siri-pls-no.jpg">
+            <h3>Applications</h3>
+            <h4>For better or worse...</h4>
+            <img src="img/siri-pls-no.jpg"/>
+        </section>
+
+        <section data-background="img/cat-concept.jpg">
+            <h3>Applications</h3>
+            <h4>Google Brain learns concept of a cat.</h4>
+            <!-- <h4>The image represents a concept of a cat, as stored in one of the neurons,
+                that Google Brain arrived at by itself (unsupervised learning).</h4> -->
+            <img class="stretch" src="img/cat-concept.jpg"/>
+        </section>
+
+        <section>
+            <h3>Applications</h3>
+            <h4>... and Alexa can play "tickle tickle".</h4>
+            <iframe class="framed" data-autoplay style="min-height: 468px; min-width: 832px;" src="https://www.youtube.com/embed/6nJ56f8dXfs?iv_load_policy=3" frameborder="0" allowfullscreen></iframe>
+        </section>
+
+        <section data-background="img/alexa.jpg">
+            <h3>Applications</h3>
+        </section>
+
+        <section>
+            <h3>Applications</h3>
+            <h4>Hand-written characters <a href="https://gist.github.com/kirel/149896">pattern recognition</a></h4>
+            <!-- <img src="img/detexify2.jpg"/> -->
+            <iframe class="framed" data-autoplay style="min-height: 468px; min-width: 832px; background-color: white;" src="http://detexify.kirelabs.org/classify.html" frameborder="0" allowfullscreen></iframe>
+        </section>
+
+        <section>
+            <h3>Applications</h3>
+            <h4>Predicting stock value</h4>
+            <img src="img/trading.jpg"/>
+        </section>
+
+        <section>
+            <h3>Applications</h3>
+            <h4>So, machine learning can really solve some of our grandest and modest problems...</h4>
+            <video width="832" height="468" controls>
+                <source src="vid/chinatp.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </section>
+
+        <section>
+            <h4>MI Startups Landscape</h4>
+            <img class="stretch" src="img/ml-landscape-thumb.jpg" alt="Machine Intelligence Landscape" />
+        </section>
+
+        <section>
+            <h3>Will machines replace you?</h3>
+            <img class="stretch" src="img/humansneednotapply.jpg"/>
+        </section>
+
+        <section>
+            <h3>Maybe</h3>
+            <ul>
+                <li>Do you need to come up with clever solutions?</li>
+                <li>Are you required to personally help others?</li>
+                <li>Does your job require to squeeze into small places?</li>
+                <li>Does your job require negotiation?</li>
+            </ul>
+        </section>
+
+        <section>
+            <h3>Will machines replace you?</h3>
+            <img class="stretch" src="img/se.png"/>
+            <div class="source">
+                <a href="https://willrobotstakemyjob.com/15-1132-software-developers-applications">willrobotstakemyjob.com: "software developers applications"</a>
+            </div>
+        </section>
+
+        <section data-state="fire-on">
+            <h3>Will machines replace you?</h3>
+            <img class="stretch" src="img/loanofficer.png"/>
+            <div class="source">
+                <a href="https://willrobotstakemyjob.com/13-2072-loan-officers">willrobotstakemyjob.com: "loan officer"</a>
+            </div>
+            <div class="fire fragment" style="z-index: -10; position: fixed; top: 0; bottom:0; left: 0; right: 0;"></div>
+        </section>
+
+        <!-- Short ML theory -->
+
+        <section>
+            <h3>So what really is machine learning?</h3>
+            <blockquote>The ability of a computer to learn without explicitly being programmed.</blockquote>
+            <div class="source">Arthur Samuel (the person who coined the term ML)</div>
+        </section>
+
+        <section>
+            <h3>Types</h3>
+            <ul>
+                <li><a href="http://scikit-learn.org/stable/supervised_learning.html">Supervised learning</a></li>
+                <li><a href="http://scikit-learn.org/stable/unsupervised_learning.html">Unsupervised learning</a></li>
+            </ul>
+        </section>
+
+        <section>
+            <h3>Machine learning algorithms</h3>
+            <img class="stretch" src="img/machinelearningalgorithms.jpg"/>
+        </section>
+
+        <section>
+            <h4>Typical Machine Learning Tasks</h4>
+            <ul class="stretch">
+                <li>classification / class probability estimation - assignment of individuals to classes, e.g. people who are going to default on credit payment</li>
+                <li>scoring / probability estimation - simlar to classification, but with probability or numerical score, e.g. 85 out of 100 on prepayment score</li>
+                <li>regression / value estimation, e.g. how many people will renew their contracts given offer X</li>
+                <li>similarity matching - identifying similar individuals based on data know about them, e.g. people similar to the best paying customers</li>
+                <li>clustering - grouping of individuals without any labels, with the goal of discovering if population forms any clusters, e.g. investigating if sales team should prepare multiple different offers</li>
+            </ul>
+        </section>
+
+        <section>
+            <h4>Typical Machine Learning Tasks</h4>
+            <ul class="stretch">
+                <li>co-occurrence grouping - grouping entities based on transactions involving them, e.g. what items are commonly purchuased together</li>
+                <li>profiling / behaviour description - attempts to characterize typical behaviour of a group, e.g. how many gallons of milk typical household buys weekly</li>
+                <li>link prediction - predicts connections between data items, e.g. friends (Facebook) and colleagues (LinkedIn) suggestions</li>
+                <li>data reduction - replacing large data set with smaller, e.g. replacing movie preferences with genres preference</li>
+                <li>casual modeling - discovering what events and actions influence other, e.g. website A/B testing in funnel optimisation: 1 versus multiple steps checkout measure against conversion rate</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>OK, let's get started!</h2>
+        </section>
+
+        <!-- 2: Setup -->
+
+        <section>
+            <h1>Setup</h1>
+        </section>
+
+        <section>
+            <h2>Toolbox</h2>
+            <ul>
+                <li>Boxen</li>
+                <li>Sum snek (here we use Python, Conda, scikit-learn, seaborn, pandas, numpy, Jupyter notebook, ...)</li>
+            </ul>
+
+            <center><div style="position:relative; width:400px; height:400px;">
+                <img class="fragment fade-out" data-fragment-index="0" src="img/appl-boxen.jpg" style="position:absolute;top:0;left:0;"/>
+                <img class="fragment fade-in" data-fragment-index="0" src="img/snek.jpg" style="position:absolute;top:0;left:0;"/>
+            </div></center>
+        </section>
+
+        <section>
+            <h2>Why Python?</h2>
+            <ul>
+                <li>Glue language.</li>
+                <li>Simple syntax - algorithm looks almost the same in pseudo-code as in Python.</li>
+                <li>Library for everything.</li>
+                <li>Portable.</li>
+                <li>Can be easily optimized (Cython, PyPy).</li>
+                <li>Easy bindings with other frameworks, libraries, languages. You could schedule cluster computation from your Jupyter notebook with locally tested code using PySpark almost out of the box.</li>
+            </ul>
+            <span style="position: absolute; bottom:0; right:0"; class="fragment fade-out" data-fragment-index="1">
+                <span class="fragment fade-in" data-fragment-index="0">
+                    <img src="img/antigravity.png"/>
+                    <div class="source">
+                        <a href="https://xkcd.com/353/">XKCD 353</a>
+                    </div>
+                </span>
+            </span>
+        </section>
+
+        <section>
+            <h3>Jupyter Notebook</h3>
+            <img class="stretch" src="img/jupyter.png" />
+        </section>
+
+        <section>
+            <h3>Jupyter Notebooks</h3>
+            <ul>
+                <li>Comes together with Anaconda, to run simply type
+                    <img src="img/cmd-jupyter-notebook.png" />
+                    into the Anaconda console, being located in a folder where you want to store your notebooks.</li>
+                <li>Up to IPython 3.X those were called IPython Notebooks and were monolithic part of IPython, but from IPython 4.0 language agnostic modules were separated from IPython, one of which became project <a href="http://jupyter.org/">Jupyter</a>. You can read about <a href="http://blog.jupyter.org/2015/04/15/the-big-split/">the big split here</a>.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h3>Continuum Analytics</h3>
+            <ul>
+                <li><a href="https://www.continuum.io/anaconda">Anaconda</a> is the fastest growing open data science platform with <a href="https://docs.continuum.io/anaconda/pkg-docs">$ > 400 $ of the most popular Python packages</a> for science, math, engineering, and data analysis, including Pandas, NumPy, and scikit-learn amongst many others. There is also even more powerful version of Anaconda for enterprise.</li>
+                <li><a href="http://conda.pydata.org/miniconda.html">Miniconda</a> - lightweight version of Anaconda.</li>
+                <li><a href="http://conda.pydata.org/docs/">Conda</a> - package and environment management system.</li>
+            </ul>
+            <p>To get started, download and install Anaconda from <a href="https://www.continuum.io/downloads">here</a>. I strongly recommend Python 3.x version as it is where the world is heading now.</p>
+        </section>
+
+        <section>
+            <h3>Jupyter and PySpark</h3>
+
+            <p>To hook up Conda (and Jupyter Notebook) to Apache Spark computational cluster (great for ML) install PySpark in Conda and use <i>findspark</i> to get to Spark Context.</p>
+
+            <pre><code class="python">
+    import findspark
+    findspark.init()
+
+    import pyspark
+    sc = pyspark.SparkContext()
+            </code></pre>
+
+            <p>To install findspark, simply type <i>conda install findspark</i> into the Anaconda console.</p>
+        </section>
+
+        <section>
+            <h3><a href="res/timeseries/Timeseries.html" target="_blank">Pandas & Jupyter Notebook</a></h3>
+            <p>High-performance, easy-to-use data structures and data analysis tools for the Python programming language.</p>
+            <iframe class="framed" style="min-height: 468px; min-width: 832px;" src="res/timeseries/Timeseries.html" frameborder="0" allowfullscreen></iframe>
+        </section>
+
+        <section>
+            <h3>scikit-learn</h3>
+            <p>Machine Learning framework with lots of simple, but efficient tools for data mining and data analysis.</p>
+            <img class="stretch" src="img/sci-kit-learn-choosing-algo-thumb.png" alt="sci-kit learn - choosing algorithm cheatsheet">
+        </section>
+
+        <section>
+            <h2>Numpy, Scipy, ...</h2>
+            <p>Numerical and scientific libraries for making complex computations efficiently.</p>
+        </section>
+
+        <section data-background="img/readysetgo.jpg">
+            <h1>Ready</h1>
+            <h1 style="color: yellow" class="fragment fade-in">Set</h1>
+            <h1 style="color: orangered" class="fragment fade-in">Go</h1>
+        </section>
+
+        <section data-transition="none" data-background="img/heaven.jpg">
+            <div style="height: 20vh; clear: both;"></div>
+            <h3>It's sunny, so let's categorize<br>some &#x2740;&nbsp;&nbsp;&#x2740;&nbsp;&nbsp;&#x2740;...</h3>
+        </section>
+
+        <section data-transition="none" data-background="img/heaven.jpg">
+            <div style="height: 20vh; clear: both;"></div>
+            <h3 class="fragment highlight-blue"><strike>It's sunny</strike> <i>Some sun is able to get through the clouds</i>, so let's categorize<br>some &#x2740;&nbsp;&nbsp;&#x2740;&nbsp;&nbsp;&#x2740;...</h3>
+        </section>
+
+        <section data-background="img/iris/setosa.jpg">
+            <h2>Contender #1</h2>
+            <h2>Iris Setosa</h2>
+        </section>
+
+        <section data-background="img/iris/versicolor.jpg">
+            <h2>Contender #2</h2>
+            <h2>Iris Versicolor</h2>
+        </section>
+
+        <section data-background="img/iris/virginica.jpg">
+            <h2>Contender #3</h2>
+            <h2>Iris Virginica</h2>
+        </section>
+
+        <section>
+            <h2>The challenge</h2>
+            <img class="stretch" src="img/iris_data_set.jpg"/>
+        </section>
+
+        <section data-state="fire-on" data-background-color="black">
+            <h3 data-fragment-index="1" class="fragment highlight-red">Demo time</h3>
+            <div class="fire stretch fragment" style="z-index: -10; position: fixed"></div>
+        </section>
+
+        <section>
+            <h3>Iris decision tree</h3>
+            <img class="stretch" src="img/iris-147.png"/>
+        </section>
+
+        <section>
+            <h4>$\frac{1}{2}$ the training data</h4>
+            <img class="stretch" src="img/iris-half.png"/>
+        </section>
+
+
+        <!-- X: pipeline to interface -->
+
+        <section>
+            <h2>ML pipeline</h2>
+            <ul>
+                <li>Common interface for all classifiers:</li>
+                <ul>
+                    <li>fit($\mathbf{X}_{\mbox{train}}$, $y_{\mbox{train}}$) $\rightarrow$ train model</li>
+                    <li>predict($\mathbf{X}_{\mbox{test}}$) $\rightarrow$ $y$</li>
+                </ul>
+                <li>Easy swapping one algorithm for another.</li>
+            </ul>
+            <br/><br/>
+            <h4 class="fragment fade-in">Let's code a classifier... (demo)</h4>
+        </section>
+
+        <section>
+            <h3>Replacing the loan officer</h3>
+            <p class="fragment fade-in">Some input data: income, spending, age, occupation, etc.</p>
+            <p class="fragment fade-in">We identified significant features using PCA/AIC/BIC/etc.</p>
+            <p class="fragment fade-in">We trained the model.</p>
+            <p class="fragment fade-in">User provides data (e.g. logs in with the bank/PayPal/eBay/Amazon account) $\rightarrow$ the more information the better loan decision we can make for the user.</p>
+            <p class="fragment fade-in">We make a loan decision in an instant.</p>
+            <p class="fragment fade-in">Due to hard data and lack of cognitive bias decisions are better on average.</p>
+            <p class="fragment fade-in" style="color: lawngreen">Profit $$$</p>
+        </section>
+
+        <section data-state="fire-on" data-background-color="black">
+            <h3 data-fragment-index="1" class="fragment highlight-red">Replacing the loan officer with 10 lines of code<br>(demo time)</h3>
+            <div class="fire stretch fragment" style="z-index: -10; position: fixed"></div>
+        </section>
+
+        <section>
+            <h3>Does anyone do it?</h3>
+            <h3 class="fragment fade-in" data-fragment-index="0">Example:</h3>
+            <img class="fragment fade-in" data-fragment-index="0" src="img/iwoca.png"/>
+            <p class="fragment fade-in" data-fragment-index="1">You link your online accounts with Iwoca.</p>
+            <p class="fragment fade-in" data-fragment-index="1">When you need a loan, the system already has your data, and makes an optimal decision in an instant.</p>
+        </section>
+
+        <!--
+        <section>
+            <h2>Support Vector Machines</h2>
+            <p></p>
+        </section>
+
+        <section>
+            <h2>Kernel trick</h2>
+            <p>Lifting up</p>
+        </section>
+
+        <section>
+            <h2>Pizza Parlour Placement</h2>
+        </section>
+
+        <section>
+            <h2>Hierarchical clustering</h2>
+        </section>
+        -->
+
+        <!-- X: Big picture -->
+
+        <section>
+            <h2>Bonus: AI</h2>
+        </section>
+
+        <section>
+            <h2>The big picture</h2>
+            <img src="img/bigpic.webp"/>
+            <!-- source: http://www.deeplearningbook.org/ -->
+        </section>
+
+        <section>
+            <h2>The big picture</h2>
+            <img style="background-color: #fff;" src="img/diffaiml.webp"/>
+        </section>
+
+        <section>
+            <h2>Advantages</h2>
+            <ul>
+                <li>Can be feed raw input (e.g. pictures and not the features)</li>
+            </ul>
+        </section>
+
+        <section>
+            <h3>What makes for good data set for AI training?</h3>
+            <ul>
+                <li>diversity</li>
+                <li>quantity</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Demo plant</h2>
+            <iframe class="framed" data-autoplay style="min-height: 468px; min-width: 832px;" src="https://www.youtube.com/embed/ACmydtFDTGs?iv_load_policy=3" frameborder="0" allowfullscreen></iframe>
+        </section>
+
+        <section data-background="img/palapa.jpg">
+            <h1>So how do we get palapa?</h1>
+        </section>
+
+        <section data-background="img/aubergine.png">
+            <h2>The plan</h2>
+            Classify pictures as aubergine or not.
+        </section>
+
+        <section>
+            <h2>Setup</h2>
+            <ul>
+                <li>Raw pictures crawled from search engine by the name.</li>
+                <li>A label classifying object in the picture</li>
+                <li>We'll use ConvNet.</li>
+                <li>TensorFlow and CUDA (cuDNN)</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>ConvNet architecture</h2>
+            <img class="stretch" src="img/convnetarch.png" />
+        </section>
+
+        <section>
+            <img class="stretch" src="img/convnetinterp.jpg" />
+        </section>
+
+        <section data-background="img/eggplant_dunnes.jpg">
+            <h1>Test</h1>
+            <img class="stretch" src="img/eggplant_dunnes.jpg"/>
+        </section>
+
+        <section>
+            <h2>DeepMind Playing RTS</h2>
+            <iframe class="framed" data-autoplay style="min-height: 468px; min-width: 832px;" src="https://www.youtube.com/embed/5iZlrBqDYPM?iv_load_policy=3" frameborder="0" allowfullscreen></iframe>
+
+        </section>
+
+        <section>
+            <h3>The Birth of Intelligence</h3>
+            <p>Computers are learning to think, read, and write. They're also picking up human sensory function, with the ability to see and hear (arguably to touch, taste, and smell, though those have been of a lesser focus). Machine intelligence technologies cut across a vast array of problem types (from classification and clustering to natural language processing and computer vision) and methods (from support vector machines to deep belief networks).</p>
+        </section>
+
+        <section>
+            <h3>The Birth of Intelligence</h3>
+            <p>The giants in search (Google, Baidu), social networks (Facebook, LinkedIn, Pinterest), content (Netflix, Yahoo!), mobile (Apple) and e-commerce (Amazon) are in an incredible position. They have massive datasets and constant consumer interactions that enable tight feedback loops for their algorithms (and these factors combine to create powerful network effects) — and they have the most to gain from the low hanging fruit that machine intelligence bears.</p>
+        </section>
+
+        <!-- X: Open data -->
+        <section>
+            <h1>Open data</h1>
+        </section>
+
+        <section>
+            <h4>Obama announces open data policy</h4>
+            <iframe class="framed" data-autoplay style="min-height: 468px; min-width: 832px;" src="https://www.youtube.com/embed/qSQPgADT6bc?iv_load_policy=3" frameborder="0" allowfullscreen></iframe>
+        </section>
+
+        <section>
+            <p>Lots of interesting data is open!</p>
+
+            <!-- examples -->
+
+            <p>President Barack Obama on 9 May 2013 signed the open data executive order:</p>
+            <blockquote>
+                Making Open and Machine Readable the New Default for Government Information.
+            </blockquote>
+            <a href="#/5">(Video on the next slide)</a>
+
+            <div class="source">
+                <a href="https://www.whitehouse.gov/the-press-office/2013/05/09/executive-order-making-open-and-machine-readable-new-default-government-">Executive Order</a>
+                <a href="http://time.com/4051119/obama-big-data-federal-government/">How US Government Uses Big Data</a>
+            </div>
+
+            <p>But, many different governments adopt similar open data policies around the world, enabling changes and innovations on unthought before scale.</p>
+
+            <p>Data available at <a href="http://www.data.gov/">data.gov</a>.</p>
+        </section>
+
+        <section>
+            ... and this data can be used in many surprising ways, e.g. using <a href="https://jawbone.com/support/articles/000008210/tracking-sleep-up24">Jawbone sleep tracking</a> for
+            <ul>
+                <li>finding Napa earthquake epicenters (by monitoring where people where waking up at given time) and</li>
+                <li>daylight saving time effect on our health and productivity (need to mash with other data).</li>
+            </ul>
+            <p>Data Science has potential to transform our lives for the better!</p>
+            <div class="source">
+                <a href="https://jawbone.com/blog/napa-earthquake-effect-on-sleep/">Napa Earthquake Effect on Bay Area Sleepers</a>
+                <a href="https://jawbone.com/blog/sleep-week/">Celebrating National Sleep Week</a>
+            </div>
+        </section>
+
+        <section>
+            <h1>Q & A</h1>
+        </section>
+
+        <section>
+            <h1>Thank you :)!</h1>
+        </section>
+    </div>
+</div>
+
+<script src="lib/js/head.min.js"></script>
+<script src="js/reveal.js"></script>
+<script src="js/Event.js"></script>
+<script src="js/Magnifier.js"></script>
+
+<script>
+    var fireOn = false;
+    // Full list of configuration options available at:
+    // https://github.com/hakimel/reveal.js#configuration
+    Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+
+        transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+        math: {
+            mathjax: 'https://cdn.mathjax.org/mathjax/latest/MathJax.js',
+            config: 'TeX-AMS_HTML-full'  // See http://docs.mathjax.org/en/latest/config-files.html
+        },
+
+        // Optional reveal.js plugins
+        dependencies: [
+            {
+                src: 'lib/js/classList.js', condition: function () {
+                return !document.body.classList;
+            }
+            },
+            {
+                src: 'plugin/markdown/marked.js', condition: function () {
+                return !!document.querySelector('[data-markdown]');
+            }
+            },
+            {
+                src: 'plugin/markdown/markdown.js', condition: function () {
+                return !!document.querySelector('[data-markdown]');
+            }
+            },
+                /*
+            {
+                src: 'plugin/highlight/highlight.js', async: true, condition: function () {
+                return !!document.querySelector('pre code');
+            }, callback: function () {
+                hljs.initHighlightingOnLoad();
+            }
+            },
+            */
+            { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+            {src: 'plugin/zoom-js/zoom.js', async: true},
+            {src: 'plugin/notes/notes.js', async: true},
+            { src: 'plugin/math/math.js', async: true }
+        ]
+    });
+
+</script>
+
+<script>
+
+    Reveal.addEventListener('ready', function (event) {
+        $('.fire').fire({
+            speed:60,
+            maxPow:9,
+            gravity:4,
+            flameWidth:20,
+            flameHeight:400,
+            plasm:true,
+            fireTransparency:.35,
+            fadingFlameSpeed:4,
+            mouseEffect:true
+        });
+        $('.fire').fire('stop');
+        console.log('Fire set-up, Sir, yes fire me Sir!')
+        window.fireOn = false;
+
+        $('.eggplant').makeItRain('img/aubico.png', '.eggplant-canvas');
+
+        $(".zoom-me").evenZoom();
+
+        // compute years since Aristotle marked at 334 B.C.
+        var years = (new Date()).getFullYear() - new Date(-334);
+        console.log('Years since Aristotle ', years);
+        $('#time-since-aristotle').text(years);
+
+        $(function () {
+            $("a.mm").click(function (e) {
+                console.log('Revealed e-mail address.');
+                var secret = function () { return atob('akBoaXJuaWFrLmNvbQ==') };
+                $(this).attr("href", 'mailto:' + secret());
+                $(this).text(secret());
+                $(this).off("click");
+                e.preventDefault();
+            });
+        });
+    });
+
+    Reveal.addEventListener('slidechanged', function (event) {
+        console.log('event', event);
+        console.log('State', event.currentSlide.dataset.state);
+
+        if (event.currentSlide.dataset.state !== 'fire-on' && window.fireOn) {
+            $('.fire').fire('stop');
+            console.log('Fire stopped. Good work fire department!')
+            window.fireOn = false;
+        }
+    });
+
+    Reveal.addEventListener('fire-on', function(event) {
+        if (!fireOn) {
+            $('.fire').fire('play');
+            console.log('Let\'s play with fire...');
+            window.fireOn = true;
+        }
+    });
+</script>
+
+</body>
+</html>
